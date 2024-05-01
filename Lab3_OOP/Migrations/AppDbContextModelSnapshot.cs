@@ -2,6 +2,7 @@
 using Lab3_OOP.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -14,76 +15,70 @@ namespace Lab3_OOP.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Lab3_OOP.Models.Human", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Human");
                 });
 
-            modelBuilder.Entity("Lab3_OOP.Models.Klempner", b =>
+            modelBuilder.Entity("Lab3_OOP.Models.HumansProf", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
-                    b.Property<int>("Gehalt")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("INN")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MenschID")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenschID");
-
-                    b.ToTable("Klempner");
-                });
-
-            modelBuilder.Entity("Lab3_OOP.Models.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("HumanID")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
-                    b.Property<int>("Studak")
-                        .HasColumnType("INTEGER");
+                    b.Property<int>("ProfessionID")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("HumanID");
 
+                    b.HasIndex("ProfessionID");
+
                     b.ToTable("Student");
                 });
 
-            modelBuilder.Entity("Lab3_OOP.Models.Klempner", b =>
+            modelBuilder.Entity("Lab3_OOP.Models.Profession", b =>
                 {
-                    b.HasOne("Lab3_OOP.Models.Human", "Mensch")
-                        .WithMany()
-                        .HasForeignKey("MenschID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Navigation("Mensch");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Klempner");
                 });
 
-            modelBuilder.Entity("Lab3_OOP.Models.Student", b =>
+            modelBuilder.Entity("Lab3_OOP.Models.HumansProf", b =>
                 {
                     b.HasOne("Lab3_OOP.Models.Human", "Human")
                         .WithMany()
@@ -91,7 +86,15 @@ namespace Lab3_OOP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Lab3_OOP.Models.Profession", "Profession")
+                        .WithMany()
+                        .HasForeignKey("ProfessionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Human");
+
+                    b.Navigation("Profession");
                 });
 #pragma warning restore 612, 618
         }

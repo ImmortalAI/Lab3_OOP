@@ -10,8 +10,8 @@ namespace Lab3_OOP.Data
         {
             Database.EnsureCreated();
         }
-        public DbSet<Lab3_OOP.Models.Human> Human { get; set; } = default!;
-        public DbSet<Lab3_OOP.Models.Klempner> Klempner { get; set; } = default!;
-        public DbSet<Lab3_OOP.Models.Student> Student { get; set; } = default!;
+        public DbSet<Lab3_OOP.Models.Human> Human { get; set; } = null!;
+        public DbSet<Lab3_OOP.Models.Profession> Profession { get; set; } = null!;
+        public DbSet<Lab3_OOP.Models.HumansProf> HumansProf { get; set; } = null!;
     }
 }

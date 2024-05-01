@@ -13,7 +13,7 @@ namespace Lab3_OOP
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connection));
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
             var app = builder.Build();
 

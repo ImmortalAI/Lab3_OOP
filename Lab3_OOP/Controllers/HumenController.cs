@@ -56,9 +56,13 @@ namespace Lab3_OOP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Human human)
         {
+            if (ModelState.IsValid)
+            {
                 _context.Add(human);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            return View(human);
         }
 
         // GET: Humen/Edit/5
@@ -89,6 +93,8 @@ namespace Lab3_OOP.Controllers
                 return NotFound();
             }
 
+            if (ModelState.IsValid)
+            {
                 try
                 {
                     _context.Update(human);
@@ -106,6 +112,8 @@ namespace Lab3_OOP.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+            }
+            return View(human);
         }
 
         // GET: Humen/Delete/5
